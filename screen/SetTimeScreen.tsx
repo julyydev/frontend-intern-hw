@@ -35,7 +35,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   }
 
   return (
-    <View>
+    <View style={styles.mainView}>
       <Text>이미지 하나가 보여질 시간(1~10초)을 선택하세요.</Text>
       <Picker
         style={styles.pickerSet}
@@ -63,5 +63,12 @@ const styles = StyleSheet.create({
   pickerSet: {
     width: 70,
     height: 150,
-  }
+  },
+  mainView: {
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
 })
+
