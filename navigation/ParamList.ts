@@ -1,5 +1,5 @@
 export type RootStackParamList = {
-    Home: undefined
-    Feed: undefined
+    Home: {second: number} | undefined
+    Feed: {second: number} | undefined
     SetTime: {screen: string}
 }

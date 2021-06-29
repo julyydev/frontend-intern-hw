@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text, Button} from 'react-native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {RouteProp} from '@react-navigation/native';
+import {RouteProp} from '@react-navigation/native'
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Feed'>
 type FeedScreenRouteProp = RouteProp<RootStackParamList, 'Feed'>

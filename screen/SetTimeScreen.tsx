@@ -25,9 +25,9 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
 
   const backScreen = () => {
     if (whatScreen === 'Home')
-      navigation.navigate('Home')
+      navigation.navigate('Home', {second: Number(text)})
     else if (whatScreen === 'Feed')
-      navigation.navigate('Feed')
+      navigation.navigate('Feed', {second: Number(text)})
   }
 
   return (
