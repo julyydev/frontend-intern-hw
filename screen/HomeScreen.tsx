@@ -48,7 +48,7 @@ export const HomeScreen: React.FC<Props> = (Props) => {
         <Text style={styles.titleSet}>Album App</Text>
       </View>
       <View style={styles.section2View}>
-        <Text>현재 슬라이드 시간(초)</Text>
+        <Text>{isFirst ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
         <Text>{second}{isFirst ? ' ' : '초'}</Text>
         <Button title='슬라이드 시간 변경'
           onPress={moveSetTimeScreen}
