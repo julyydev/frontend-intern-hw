@@ -31,12 +31,15 @@ export const HomeScreen: React.FC<Props> = (Props) => {
     if (isFirst)
       Alert.alert('시간을 선택하지 않았습니다.')
     else
-      navigation.navigate('Feed')
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    { // @ts-ignore
+      navigation.navigate('Feed', {second: second})
+    }
   }
 
   return (
     <View>
-      <Text>현재 슬라이드 시간</Text>
+      <Text>현재 슬라이드 시간(초)</Text>
       <Text>{second}{isFirst ? ' ' : '초'}</Text>
       <Button title='슬라이드 시간 변경'
         onPress={moveSetTimeScreen}
