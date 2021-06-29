@@ -3,20 +3,17 @@ import {View, Text, Button} from 'react-native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Feed'>
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SetTime'>
 
 type Props = {
-  navigation: HomeScreenNavigationProp
+    navigation: HomeScreenNavigationProp
 }
 
-export const FeedScreen: React.FC<Props> = (Props) => {
+export const SetTimeScreen: React.FC<Props> = (Props) => {
   const {navigation} = Props
 
   return (
     <View>
-      <Button title='슬라이드 시간 변경'
-        onPress={() => navigation.navigate('SetTime')}
-      />
       <Button title='홈화면으로'
         onPress={() => navigation.navigate('Home')}
       />

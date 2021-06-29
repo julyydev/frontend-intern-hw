@@ -14,6 +14,9 @@ export const HomeScreen: React.FC<Props> = (Props) => {
 
   return (
     <View>
+      <Button title='슬라이드 시간 변경'
+        onPress={() => navigation.navigate('SetTime')}
+      />
       <Button title='슬라이드 시작'
         onPress={() => navigation.navigate('Feed')}
       />
