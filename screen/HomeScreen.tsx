@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {View, Text, Button} from 'react-native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -15,7 +15,7 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   return (
     <View>
       <Button title='슬라이드 시간 변경'
-        onPress={() => navigation.navigate('SetTime')}
+        onPress={() => navigation.navigate('SetTime', {screen: 'Home'})}
       />
       <Button title='슬라이드 시작'
         onPress={() => navigation.navigate('Feed')}
