@@ -24,10 +24,14 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   };
 
   const backScreen = () => {
+    let textToNum = Number(text)
+    if (textToNum === 0)
+      textToNum = 1
+
     if (whatScreen === 'Home')
-      navigation.navigate('Home', {second: Number(text)})
+      navigation.navigate('Home', {second: textToNum})
     else if (whatScreen === 'Feed')
-      navigation.navigate('Feed', {second: Number(text)})
+      navigation.navigate('Feed', {second: textToNum})
   }
 
   return (
@@ -37,16 +41,16 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
         style={styles.pickerSet}
         selectedValue={text}
         onValueChange={value => onChangeText(value)}>
-        <Picker.Item label="1초" value="1" />
-        <Picker.Item label="2초" value="2" />
-        <Picker.Item label="3초" value="3" />
-        <Picker.Item label="4초" value="4" />
-        <Picker.Item label="5초" value="5" />
-        <Picker.Item label="6초" value="6" />
-        <Picker.Item label="7초" value="7" />
-        <Picker.Item label="8초" value="8" />
-        <Picker.Item label="9초" value="9" />
-        <Picker.Item label="10초" value="10" />
+        <Picker.Item label='1초' value='1' />
+        <Picker.Item label='2초' value='2' />
+        <Picker.Item label='3초' value='3' />
+        <Picker.Item label='4초' value='4' />
+        <Picker.Item label='5초' value='5' />
+        <Picker.Item label='6초' value='6' />
+        <Picker.Item label='7초' value='7' />
+        <Picker.Item label='8초' value='8' />
+        <Picker.Item label='9초' value='9' />
+        <Picker.Item label='10초' value='10' />
       </Picker>
       <Button title='원래화면으로'
         onPress={backScreen}
