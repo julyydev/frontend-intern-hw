@@ -1,8 +1,12 @@
 import React from 'react'
-import {View, Text, Button, Image, StyleSheet} from 'react-native'
+import {View, Text, Button, Image, Animated, StyleSheet} from 'react-native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
+
+const Flickr_API =
+    'https://api.flickr.com/services/feeds/photos_public.gne?tags=landscape,portrait&tagmode=any' +
+    '&format=json&nojsoncallback=1';
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Feed'>
 type FeedScreenRouteProp = RouteProp<RootStackParamList, 'Feed'>
