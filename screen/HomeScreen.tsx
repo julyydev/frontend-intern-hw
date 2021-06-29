@@ -37,6 +37,7 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   return (
     <View>
       <Text>현재 슬라이드 시간</Text>
+      <Text>{second}{isFirst ? ' ' : '초'}</Text>
       <Button title='슬라이드 시간 변경'
         onPress={moveSetTimeScreen}
       />
