@@ -61,7 +61,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
 
 const styles = StyleSheet.create({
   pickerSet: {
-    width: 70,
+    width: 200,
     height: 150,
   },
   mainView: {
