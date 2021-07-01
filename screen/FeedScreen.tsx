@@ -140,7 +140,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
       </Animated.View>
       <View style={styles.section2View}>
         <Text>현재 슬라이드 시간(초)</Text>
-        <Text>남은 이미지: {imageArray.length}</Text>
         <Text>{second}초</Text>
         <Button title='슬라이드 시간 변경'
           onPress={() => navigation.navigate('SetTime', {screen: 'Feed'})}
@@ -162,18 +161,20 @@ const styles = StyleSheet.create({
   },
   section1View: {
     position: 'absolute',
+    top: 60,
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center'
   },
   section2View: {
+    bottom: 100,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center'
   },
   imageSet: {
-    width: 400,
-    height: 400,
+    width: 350,
+    height: 450,
     resizeMode: 'contain',
   },
 })
