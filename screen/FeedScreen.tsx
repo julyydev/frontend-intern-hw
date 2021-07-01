@@ -37,6 +37,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
+  const [isMounted, setIsMounted] = useState(true)
 
   const fadeIn1 = Animated.timing(fadeAnim1, {
     toValue: 1,
@@ -98,6 +99,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   }, [imageArray])
 
   useEffect(() => {
+    setIsMounted(true)
     Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2])]).start(
       () => {
         if (imageArray.length === 6) {
@@ -107,6 +109,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         fadeOut2.start()
       }
     )
+    return () => {setIsMounted(false)}
   }, [imageArray.length, firstLoad])
 
   return (
@@ -131,6 +134,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
       </Animated.View>
       <View style={styles.section2View}>
         <Text>현재 슬라이드 시간(초)</Text>
+        <Text>남은 이미지: {imageArray.length}</Text>
         <Text>{second}초</Text>
         <Button title='슬라이드 시간 변경'
           onPress={() => navigation.navigate('SetTime', {screen: 'Feed'})}
