@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {View, Text, Button, Alert, StyleSheet, Image} from 'react-native'
+import {Text, Button, Alert} from 'react-native'
+import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
@@ -41,13 +42,13 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   }
 
   return (
-    <View style={styles.mainView}>
-      <View style={styles.section1View}>
+    <MainView>
+      <Section1View>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <Image style={styles.imageSet} source={(FlickrLogo)} />
-        <Text style={styles.titleSet}>Album App</Text>
-      </View>
-      <View style={styles.section2View}>
+        <LogoImage source={(FlickrLogo)} />
+        <Title>Album App</Title>
+      </Section1View>
+      <Section2View>
         <Text>{isFirst ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
         <Text>{second}{isFirst ? ' ' : '초'}</Text>
         <Button title='슬라이드 시간 변경'
@@ -56,45 +57,37 @@ export const HomeScreen: React.FC<Props> = (Props) => {
         <Button title='슬라이드 시작'
           onPress={moveFeedScreen}
         />
-      </View>
-    </View>
+      </Section2View>
+    </MainView>
   )
 }
 
-const styles = StyleSheet.create({
-  mainView: {
-    backgroundColor: 'white',
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  section1View: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  section2View: {
-    flex: 1.7,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  titleSet: {
-    fontSize: 40,
-    fontWeight: 'bold'
-  },
-  buttonSet: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  imageSet: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    resizeMode: 'contain',
-    width: 100,
-    height: 50
-  },
-  textSet: {
-    fontFamily: 'Helvetica'
-  }
+const MainView = styled.View({
+  backgroundColor: 'white',
+  flex: 1,
+  justifyContent: 'space-around',
+  alignItems: 'center'
+})
+
+const Section1View = styled.View({
+  flex: 1,
+  justifyContent: 'flex-end',
+  alignItems: 'center'
+})
+
+const Section2View = styled.View({
+  flex: 1.7,
+  justifyContent: 'center',
+  alignItems: 'center'
+})
+
+const LogoImage = styled.Image({
+  width: 100,
+  height: 50,
+  resizeMode: 'contain'
+})
+
+const Title = styled.Text({
+  fontSize: 40,
+  fontWeight: 'bold'
 })
