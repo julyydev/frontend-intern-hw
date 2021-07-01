@@ -36,6 +36,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const fadeAnim2 = useRef(new Animated.Value(0)).current
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
+  const [firstLoad, setFirstLoad] = useState(true)
 
   const fadeIn1 = Animated.timing(fadeAnim1, {
     toValue: 1,
@@ -76,6 +77,8 @@ export const FeedScreen: React.FC<Props> = (Props) => {
             return current
           })
           setFetchNeeded(false)
+          if (firstLoad)
+            setFirstLoad(false)
         })
     }
   }, [isFetchNeeded])
@@ -104,7 +107,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         fadeOut2.start()
       }
     )
-  }, [imageArray.length])
+  }, [imageArray.length, firstLoad])
 
   return (
     <View style={styles.mainView}>
