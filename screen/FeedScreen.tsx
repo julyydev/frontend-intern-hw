@@ -95,7 +95,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   }, [imageArray])
 
   useEffect(() => {
-    Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2]), Animated.delay(second * 1000)]).start(
+    Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2])]).start(
       () => {
         if (imageArray.length === 6) {
           setFetchNeeded(true)
