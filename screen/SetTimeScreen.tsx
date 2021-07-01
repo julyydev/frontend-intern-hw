@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
-import {View, Text, Button, StyleSheet} from 'react-native'
+import {Text, Button} from 'react-native'
 import {Picker} from '@react-native-picker/picker';
+import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
@@ -35,10 +36,9 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   }
 
   return (
-    <View style={styles.mainView}>
+    <MainContainer>
       <Text>이미지 하나가 보여질 시간(1~10초)을 선택하세요.</Text>
-      <Picker
-        style={styles.pickerSet}
+      <StyledPicker
         selectedValue={text}
         onValueChange={value => onChangeText(value)}>
         <Picker.Item label='1초' value='1' />
@@ -51,23 +51,22 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
         <Picker.Item label='8초' value='8' />
         <Picker.Item label='9초' value='9' />
         <Picker.Item label='10초' value='10' />
-      </Picker>
+      </StyledPicker>
       <Button title='원래화면으로'
         onPress={backScreen}
       />
-    </View>
+    </MainContainer>
   )
 }
 
-const styles = StyleSheet.create({
-  pickerSet: {
-    width: 200,
-    height: 150,
-  },
-  mainView: {
-    backgroundColor: 'white',
-    flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
-  },
+const MainContainer = styled.View ({
+  backgroundColor: 'white',
+  flex: 1,
+  justifyContent: 'space-evenly',
+  alignItems: 'center'
+})
+
+const StyledPicker = styled.Picker({
+  width: 200,
+  height: 150
 })
