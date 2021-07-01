@@ -14,6 +14,10 @@ type Props = {
     route: SetTimeScreenRouteProp
 }
 
+const timePickerItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => {
+  return <Picker.Item key={`${value}`} label={`${value}초`} value={`${value}`}/>
+})
+
 export const SetTimeScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
   const whatScreen = route.params.screen
@@ -41,16 +45,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
       <StyledPicker
         selectedValue={text}
         onValueChange={value => onChangeText(value)}>
-        <Picker.Item label='1초' value='1' />
-        <Picker.Item label='2초' value='2' />
-        <Picker.Item label='3초' value='3' />
-        <Picker.Item label='4초' value='4' />
-        <Picker.Item label='5초' value='5' />
-        <Picker.Item label='6초' value='6' />
-        <Picker.Item label='7초' value='7' />
-        <Picker.Item label='8초' value='8' />
-        <Picker.Item label='9초' value='9' />
-        <Picker.Item label='10초' value='10' />
+        {timePickerItems}
       </StyledPicker>
       <Button title='원래화면으로'
         onPress={backScreen}
