@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef, useMemo, useCallback} from 'react'
-import {View, Text, Button, Image, Animated, StyleSheet} from 'react-native'
+import {Text, Button, Animated} from 'react-native'
+import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
@@ -108,37 +109,25 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     if (imageArray.length === 0) {
       return <></>
     }
-    return <Image style={styles.imageSet} source={{uri: imageArray[0]}} />
+    return <StyledImage source={{uri: imageArray[0]}} />
   }, [imageArray])
 
   const imageView2 = useMemo(() => {
     if (imageArray.length === 0) {
       return <></>
     }
-    return <Image style={styles.imageSet} source={{uri: imageArray[1]}} />
+    return <StyledImage source={{uri: imageArray[1]}} />
   }, [imageArray])
 
   return (
-    <View style={styles.mainView}>
-      <Animated.View
-        style={[
-          styles.section1View,
-          {
-            opacity: fadeAnim1
-          },
-        ]}>
+    <MainView>
+      <AnimationView style={[{opacity: fadeAnim1}]}>
         {imageView}
-      </Animated.View>
-      <Animated.View
-        style={[
-          styles.section1View,
-          {
-            opacity: fadeAnim2
-          },
-        ]}>
+      </AnimationView>
+      <AnimationView style={[{opacity: fadeAnim2}]}>
         {imageView2}
-      </Animated.View>
-      <View style={styles.section2View}>
+      </AnimationView>
+      <TextButtonContainer>
         <Text>현재 슬라이드 시간(초)</Text>
         <Text>{second}초</Text>
         <Button title='슬라이드 시간 변경'
@@ -147,34 +136,35 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         <Button title='홈화면으로'
           onPress={() => navigation.navigate('Home', {second: second})}
         />
-      </View>
-    </View>
+      </TextButtonContainer>
+    </MainView>
   )
 }
 
-const styles = StyleSheet.create({
-  mainView: {
-    backgroundColor: 'white',
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  section1View: {
-    position: 'absolute',
-    top: 60,
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  section2View: {
-    bottom: 100,
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  imageSet: {
-    width: 350,
-    height: 450,
-    resizeMode: 'contain',
-  },
+const MainView = styled.View({
+  backgroundColor: 'white',
+  flex: 1,
+  justifyContent: 'space-around',
+  alignItems: 'center'
+})
+
+const AnimationView = styled(Animated.View)({
+  position: 'absolute',
+  top: 60,
+  flex: 2,
+  justifyContent: 'center',
+  alignItems: 'center'
+})
+
+const TextButtonContainer = styled.View({
+  bottom: 100,
+  flex: 1,
+  justifyContent: 'flex-end',
+  alignItems: 'center'
+})
+
+const StyledImage = styled.Image({
+  width: 350,
+  height: 450,
+  resizeMode: 'contain'
 })

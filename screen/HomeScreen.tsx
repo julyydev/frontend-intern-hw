@@ -42,13 +42,13 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   }
 
   return (
-    <MainView>
-      <Section1View>
+    <MainContainer>
+      <TitleContainer>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
         <LogoImage source={(FlickrLogo)} />
         <Title>Album App</Title>
-      </Section1View>
-      <Section2View>
+      </TitleContainer>
+      <TextButtonContainer>
         <Text>{isFirst ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
         <Text>{second}{isFirst ? ' ' : '초'}</Text>
         <Button title='슬라이드 시간 변경'
@@ -57,25 +57,25 @@ export const HomeScreen: React.FC<Props> = (Props) => {
         <Button title='슬라이드 시작'
           onPress={moveFeedScreen}
         />
-      </Section2View>
-    </MainView>
+      </TextButtonContainer>
+    </MainContainer>
   )
 }
 
-const MainView = styled.View({
+const MainContainer = styled.View({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-around',
   alignItems: 'center'
 })
 
-const Section1View = styled.View({
+const TitleContainer = styled.View({
   flex: 1,
   justifyContent: 'flex-end',
   alignItems: 'center'
 })
 
-const Section2View = styled.View({
+const TextButtonContainer = styled.View({
   flex: 1.7,
   justifyContent: 'center',
   alignItems: 'center'
