@@ -63,6 +63,26 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     useNativeDriver: true,
   })
 
+  const runAnimation = useCallback(() => {
+    if (isMounted) {
+      Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2])]).start(
+        () => {
+          if (imageArray.length === 6) {
+            setFetchNeeded(true)
+          }
+          setImageArray(imageArray.slice(1))
+          fadeOut2.start()
+        }
+      )
+    }
+  }, [imageArray])
+
+  useEffect(() => {
+    setIsMounted(true)
+    runAnimation()
+    return () => {setIsMounted(false)}
+  }, [imageArray.length, firstLoad])
+
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
     const response = await fetch(Flickr_API)
     const json: Response = (await response.json()) as Response
@@ -97,20 +117,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     }
     return <Image style={styles.imageSet} source={{uri: imageArray[1]}} />
   }, [imageArray])
-
-  useEffect(() => {
-    setIsMounted(true)
-    Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2])]).start(
-      () => {
-        if (imageArray.length === 6) {
-          setFetchNeeded(true)
-        }
-        setImageArray(imageArray.slice(1))
-        fadeOut2.start()
-      }
-    )
-    return () => {setIsMounted(false)}
-  }, [imageArray.length, firstLoad])
 
   return (
     <View style={styles.mainView}>
