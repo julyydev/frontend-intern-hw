@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   mainView: {
     backgroundColor: 'white',
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
     alignItems: 'center'
   },
 })
