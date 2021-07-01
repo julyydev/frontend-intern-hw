@@ -32,19 +32,32 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
 
   const second = route.params?.second
-  const fadeAnim = useRef(new Animated.Value(0)).current
+  const fadeAnim1 = useRef(new Animated.Value(0)).current
+  const fadeAnim2 = useRef(new Animated.Value(0)).current
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
 
-  const fadeIn = Animated.timing(fadeAnim, {
+  const fadeIn1 = Animated.timing(fadeAnim1, {
+    toValue: 1,
+    duration: 0,
+    useNativeDriver: true,
+  })
+
+  const fadeOut1 = Animated.timing(fadeAnim1, {
+    toValue: 0,
+    duration: 1000,
+    useNativeDriver: true,
+  })
+
+  const fadeIn2 = Animated.timing(fadeAnim2, {
     toValue: 1,
     duration: 1000,
     useNativeDriver: true,
   })
 
-  const fadeOut = Animated.timing(fadeAnim, {
+  const fadeOut2 = Animated.timing(fadeAnim2, {
     toValue: 0,
-    duration: 1000,
+    duration: 0,
     useNativeDriver: true,
   })
 
@@ -74,13 +87,21 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     return <Image style={styles.imageSet} source={{uri: imageArray[0]}} />
   }, [imageArray])
 
+  const imageView2 = useMemo(() => {
+    if (imageArray.length === 0) {
+      return <></>
+    }
+    return <Image style={styles.imageSet} source={{uri: imageArray[1]}} />
+  }, [imageArray])
+
   useEffect(() => {
-    Animated.sequence([fadeIn, Animated.delay(second * 1000), fadeOut]).start(
+    Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2]), Animated.delay(second * 1000)]).start(
       () => {
-        if (imageArray.length === 5) {
+        if (imageArray.length === 6) {
           setFetchNeeded(true)
         }
         setImageArray(imageArray.slice(1))
+        fadeOut2.start()
       }
     )
   }, [imageArray.length])
@@ -91,10 +112,19 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         style={[
           styles.section1View,
           {
-            opacity: fadeAnim,
+            opacity: fadeAnim1
           },
         ]}>
         {imageView}
+      </Animated.View>
+      <Animated.View
+        style={[
+          styles.section1View,
+          {
+            opacity: fadeAnim2
+          },
+        ]}>
+        {imageView2}
       </Animated.View>
       <View style={styles.section2View}>
         <Text>현재 슬라이드 시간(초)</Text>
@@ -118,6 +148,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   section1View: {
+    position: 'absolute',
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center'
