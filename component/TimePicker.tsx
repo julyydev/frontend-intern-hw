@@ -1,6 +1,5 @@
 import React from 'react'
-import {Picker} from '@react-native-picker/picker';
-import styled from '@emotion/native';
+import {Picker} from '@react-native-picker/picker'
 
 interface Props {
   selectedValue: string
@@ -12,16 +11,11 @@ const timePickerItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => {
 })
 
 const TimePicker = ({selectedValue, onValueChange}: Props) => {
-  return <StyledPicker
+  return <Picker style={{width: 200, height: 150}}
     selectedValue={selectedValue}
     onValueChange={onValueChange}>
     {timePickerItems}
-  </StyledPicker>
+  </Picker>
 }
 
 export default TimePicker
-
-const StyledPicker = styled.Picker({
-  width: 200,
-  height: 150
-})

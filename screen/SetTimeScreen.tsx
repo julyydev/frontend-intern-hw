@@ -30,7 +30,6 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   }
 
   const [text, setText] = useState('');
-
   const onChangeText = (value: string) => {
     setText(value);
   };
