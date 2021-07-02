@@ -34,46 +34,33 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
 
   const second = route.params?.second
-  const fadeAnim1 = useRef(new Animated.Value(0)).current
-  const fadeAnim2 = useRef(new Animated.Value(0)).current
+  const firstFadeValue = useRef(new Animated.Value(0)).current
+  const secondFadeValue = useRef(new Animated.Value(0)).current
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
 
-  const fadeIn1 = Animated.timing(fadeAnim1, {
-    toValue: 1,
-    duration: 0,
-    useNativeDriver: true,
+  const fadeAnimation = (fadeValue: Animated.Value, value: number, duration: number) => Animated.timing(fadeValue, {
+    toValue: value,
+    duration: duration,
+    useNativeDriver: true
   })
 
-  const fadeOut1 = Animated.timing(fadeAnim1, {
-    toValue: 0,
-    duration: 1000,
-    useNativeDriver: true,
-  })
-
-  const fadeIn2 = Animated.timing(fadeAnim2, {
-    toValue: 1,
-    duration: 1000,
-    useNativeDriver: true,
-  })
-
-  const fadeOut2 = Animated.timing(fadeAnim2, {
-    toValue: 0,
-    duration: 0,
-    useNativeDriver: true,
-  })
+  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1, 0)
+  const firstImageFadeOut = fadeAnimation(firstFadeValue, 0, 1000)
+  const secondImageFadeIn = fadeAnimation(secondFadeValue, 1, 1000)
+  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0, 0)
 
   const runAnimation = useCallback(() => {
     if (isMounted) {
-      Animated.sequence([fadeIn1, Animated.delay(second * 1000), Animated.parallel([fadeOut1, fadeIn2])]).start(
+      Animated.sequence([firstImageFadeIn, Animated.delay(second * 1000), Animated.parallel([firstImageFadeOut, secondImageFadeIn])]).start(
         () => {
           if (imageArray.length === 6) {
             setFetchNeeded(true)
           }
           setImageArray(imageArray.slice(1))
-          fadeOut2.start()
+          secondImageFadeOut.start()
         }
       )
     }
@@ -111,10 +98,10 @@ export const FeedScreen: React.FC<Props> = (Props) => {
 
   return (
     <MainView>
-      <AnimationView style={[{opacity: fadeAnim1}]}>
+      <AnimationView style={[{opacity: firstFadeValue}]}>
         {firstImageView}
       </AnimationView>
-      <AnimationView style={[{opacity: fadeAnim2}]}>
+      <AnimationView style={[{opacity: secondFadeValue}]}>
         {secondImageView}
       </AnimationView>
       <TextButtonContainer>
