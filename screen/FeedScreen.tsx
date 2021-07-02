@@ -35,11 +35,12 @@ export const FeedScreen: React.FC<Props> = (Props) => {
 
   const second = route.params?.second
   const firstFadeValue = useRef(new Animated.Value(0)).current
-  const secondFadeValue = useRef(new Animated.Value(0)).current
+  const secondFadeValue = useRef(new Animated.Value(1)).current
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
+  const [isRunAnimation, setRunAnimation] = useState(true)
 
   const fadeAnimation = (fadeValue: Animated.Value, value: number, duration: number) => Animated.timing(fadeValue, {
     toValue: value,
@@ -47,30 +48,44 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     useNativeDriver: true
   })
 
-  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1, 0)
+  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1, 1000)
   const firstImageFadeOut = fadeAnimation(firstFadeValue, 0, 1000)
   const secondImageFadeIn = fadeAnimation(secondFadeValue, 1, 1000)
-  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0, 0)
+  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0, 1000)
 
-  const runAnimation = useCallback(() => {
+  /* const runAnimation = useCallback(() => {
     if (isMounted) {
       Animated.sequence([firstImageFadeIn, Animated.delay(second * 1000), Animated.parallel([firstImageFadeOut, secondImageFadeIn])]).start(
         () => {
-          if (imageArray.length === 6) {
-            setFetchNeeded(true)
-          }
-          setImageArray(imageArray.slice(1))
-          secondImageFadeOut.start()
+          // if (imageArray.length === 6) {
+          //   setFetchNeeded(true)
+          // }
+          // setImageArray(imageArray.slice(1))
+          secondImageFadeOut.start(() => {
+            setRunAnimation(true)
+         })
         }
       )
     }
-  }, [imageArray])
+  }, [setRunAnimation])
+     */
+  const runAnimation = Animated.sequence([
+    Animated.parallel([firstImageFadeIn, secondImageFadeOut]),
+    Animated.delay(second * 1000),
+    Animated.parallel([firstImageFadeOut, secondImageFadeIn]),
+    Animated.delay(second * 1000)
+  ])
 
   useEffect(() => {
     setIsMounted(true)
-    runAnimation()
+    runAnimation.start(() => {
+      console.log(`first image : ${imageArray[0]}`)
+      console.log(`second image : ${imageArray[1]}`)
+      console.log('run animation')
+      setRunAnimation(!isRunAnimation)
+    })
     return () => {setIsMounted(false)}
-  }, [imageArray.length, firstLoad])
+  }, [firstLoad, isRunAnimation])
 
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
     const response = await fetch(Flickr_API)
