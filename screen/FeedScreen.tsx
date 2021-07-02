@@ -37,40 +37,78 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
   const [imageArray, setImageArray] = useState<Array<string>>([])
+  const [copyImageArray, setCopyImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
   const [firstLoad, setFirstLoad] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
+  const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
+  const [isSecondDelayOver, setIsSecondDelayOver] = useState(false)
+  const [firstRun, setFirstRun] = useState(true)
 
-  const fadeAnimation = (fadeValue: Animated.Value, value: number, duration: number) => Animated.timing(fadeValue, {
-    toValue: value,
-    duration: duration,
+  const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
+    toValue: toValue,
+    duration: 1000,
     useNativeDriver: true
   })
 
-  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1, 0)
-  const firstImageFadeOut = fadeAnimation(firstFadeValue, 0, 1000)
-  const secondImageFadeIn = fadeAnimation(secondFadeValue, 1, 1000)
-  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0, 0)
+  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1)
+  const firstImageFadeOut = fadeAnimation(firstFadeValue, 0)
+  const secondImageFadeIn = fadeAnimation(secondFadeValue, 1)
+  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0)
+
+  const firstImageAnimation = useCallback(() => {
+    Animated.sequence(
+      [firstImageFadeIn, Animated.delay(second * 1000)]
+    ).start(() => {
+      // console.log('first fade in end')
+      setIsFirstDelayOver(true)
+      firstImageFadeOut.start(() => {
+        // console.log('first fade out end')
+        setImageArray(imageArray.slice(2))
+        // console.log('first array slice end')
+        if (imageArray.length === 6)
+          setFetchNeeded(true)
+      })
+    })
+  }, [imageArray])
+
+  const secondImageAnimation = useCallback(() => {
+    Animated.sequence(
+      [secondImageFadeIn, Animated.delay(second * 1000)]
+    ).start(() => {
+      // console.log('second fade in end')
+      setIsSecondDelayOver(true)
+      secondImageFadeOut.start(() => {
+        // console.log('second fade out end')
+        setCopyImageArray(imageArray)
+        // console.log('second array slice end')
+      })
+    })
+  }, [copyImageArray])
 
   const runAnimation = useCallback(() => {
     if (isMounted) {
-      Animated.sequence([firstImageFadeIn, Animated.delay(second * 1000), Animated.parallel([firstImageFadeOut, secondImageFadeIn])]).start(
-        () => {
-          if (imageArray.length === 6) {
-            setFetchNeeded(true)
-          }
-          setImageArray(imageArray.slice(1))
-          secondImageFadeOut.start()
-        }
-      )
+      if (firstRun || isSecondDelayOver) {
+        console.log('image array!!!')
+        // console.log('run first animation')
+        firstImageAnimation()
+        setIsSecondDelayOver(false)
+        setFirstRun(false)
+      }
+      if (isFirstDelayOver) {
+        console.log('copy image array!!!')
+        // console.log('run second animation')
+        secondImageAnimation()
+        setIsFirstDelayOver(false)
+      }
     }
-  }, [imageArray])
+  }, [imageArray, copyImageArray, isFirstDelayOver, isSecondDelayOver, firstRun])
 
   useEffect(() => {
     setIsMounted(true)
     runAnimation()
     return () => {setIsMounted(false)}
-  }, [imageArray.length, firstLoad])
+  }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
 
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
     const response = await fetch(Flickr_API)
@@ -86,6 +124,10 @@ export const FeedScreen: React.FC<Props> = (Props) => {
             current.push(...newImageArray)
             return current
           })
+          // setCopyImageArray((current) => {
+          //   current.push(...newImageArray)
+          //   return current
+          // })
           setFetchNeeded(false)
           if (firstLoad)
             setFirstLoad(false)
@@ -94,7 +136,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   }, [isFetchNeeded])
 
   const firstImageView = imageView(imageArray, 0)
-  const secondImageView = imageView(imageArray, 1)
+  const secondImageView = imageView(copyImageArray, 1)
 
   return (
     <MainView>
