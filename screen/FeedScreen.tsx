@@ -1,9 +1,10 @@
-import React, {useState, useEffect, useRef, useMemo, useCallback} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 import {Text, Button, Animated} from 'react-native'
 import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
+import imageView from '../component/ImageView'
 
 const Flickr_API =
     'https://api.flickr.com/services/feeds/photos_public.gne?tags=landscape,portrait&tagmode=any' +
@@ -105,27 +106,16 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     }
   }, [isFetchNeeded])
 
-  const imageView = useMemo(() => {
-    if (imageArray.length === 0) {
-      return <></>
-    }
-    return <StyledImage source={{uri: imageArray[0]}} />
-  }, [imageArray])
-
-  const imageView2 = useMemo(() => {
-    if (imageArray.length === 0) {
-      return <></>
-    }
-    return <StyledImage source={{uri: imageArray[1]}} />
-  }, [imageArray])
+  const firstImageView = imageView(imageArray, 0)
+  const secondImageView = imageView(imageArray, 1)
 
   return (
     <MainView>
       <AnimationView style={[{opacity: fadeAnim1}]}>
-        {imageView}
+        {firstImageView}
       </AnimationView>
       <AnimationView style={[{opacity: fadeAnim2}]}>
-        {imageView2}
+        {secondImageView}
       </AnimationView>
       <TextButtonContainer>
         <Text>현재 슬라이드 시간(초)</Text>
@@ -161,10 +151,4 @@ const TextButtonContainer = styled.View({
   flex: 1,
   justifyContent: 'flex-end',
   alignItems: 'center'
-})
-
-const StyledImage = styled.Image({
-  width: 350,
-  height: 450,
-  resizeMode: 'contain'
 })
