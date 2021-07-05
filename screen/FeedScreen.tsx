@@ -42,7 +42,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const [isMounted, setIsMounted] = useState(true)
   const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
   const [isSecondDelayOver, setIsSecondDelayOver] = useState(false)
-  const [firstLoad, setFirstLoad] = useState(true)
   const [firstRun, setFirstRun] = useState(true)
 
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
@@ -61,8 +60,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
             return current
           })
           setFetchNeeded(false)
-          if (firstLoad)
-            setFirstLoad(false)
           console.log('fetch end')
         })
     }
