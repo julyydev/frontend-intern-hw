@@ -5,15 +5,12 @@ import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 import imageView from '../component/ImageView'
-
-const Flickr_API =
-    'https://api.flickr.com/services/feeds/photos_public.gne?tags=landscape,portrait&tagmode=any' +
-    '&format=json&nojsoncallback=1'
+import {Flickr_URL} from '../assets/url/FlickrURL'
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Feed'>
 type FeedScreenRouteProp = RouteProp<RootStackParamList, 'Feed'>
 
-type Props = {
+interface Props {
   navigation: FeedScreenNavigationProp
   route: FeedScreenRouteProp
 }
@@ -45,13 +42,12 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const [firstRun, setFirstRun] = useState(true)
 
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
-    const response = await fetch(Flickr_API)
+    const response = await fetch(Flickr_URL)
     const json: Response = (await response.json()) as Response
     return json.items.map((item) => item.media.m)
   }, [])
 
   useEffect(() => {
-    console.log('fetch useEffect')
     if (isFetchNeeded) {
       void fetchImage()
         .then((newImageArray) => {
@@ -60,7 +56,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
             return current
           })
           setFetchNeeded(false)
-          console.log('fetch end')
         })
     }
   }, [isFetchNeeded])

@@ -6,12 +6,12 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import FlickrLogo from '../image/FlickrLogo.png'
+import FlickrLogo from '../assets/image/FlickrLogo.png'
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>
 type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Feed'>
 
-type Props = {
+interface Props {
   navigation: HomeScreenNavigationProp
   route: HomeScreenRouteProp
 }
