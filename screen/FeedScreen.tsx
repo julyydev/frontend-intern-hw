@@ -39,11 +39,34 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const [imageArray, setImageArray] = useState<Array<string>>([])
   const [copyImageArray, setCopyImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setFetchNeeded] = useState(true)
-  const [firstLoad, setFirstLoad] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
   const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
   const [isSecondDelayOver, setIsSecondDelayOver] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
   const [firstRun, setFirstRun] = useState(true)
+
+  const fetchImage = useCallback(async (): Promise<Array<string>> => {
+    const response = await fetch(Flickr_API)
+    const json: Response = (await response.json()) as Response
+    return json.items.map((item) => item.media.m)
+  }, [])
+
+  useEffect(() => {
+    console.log('fetch useEffect')
+    if (isFetchNeeded) {
+      void fetchImage()
+        .then((newImageArray) => {
+          setImageArray((current) => {
+            current.push(...newImageArray)
+            return current
+          })
+          setFetchNeeded(false)
+          if (firstLoad)
+            setFirstLoad(false)
+          console.log('fetch end')
+        })
+    }
+  }, [isFetchNeeded])
 
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,
@@ -60,44 +83,34 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     Animated.sequence(
       [firstImageFadeIn, Animated.delay(second * 1000)]
     ).start(() => {
-      // console.log('first fade in end')
+      setCopyImageArray(imageArray)
       setIsFirstDelayOver(true)
       firstImageFadeOut.start(() => {
-        // console.log('first fade out end')
         setImageArray(imageArray.slice(2))
-        // console.log('first array slice end')
         if (imageArray.length === 6)
           setFetchNeeded(true)
       })
     })
-  }, [imageArray])
+  }, [imageArray, copyImageArray])
 
   const secondImageAnimation = useCallback(() => {
     Animated.sequence(
       [secondImageFadeIn, Animated.delay(second * 1000)]
     ).start(() => {
-      // console.log('second fade in end')
       setIsSecondDelayOver(true)
       secondImageFadeOut.start(() => {
-        // console.log('second fade out end')
-        setCopyImageArray(imageArray)
-        // console.log('second array slice end')
       })
     })
-  }, [copyImageArray])
+  }, [])
 
   const runAnimation = useCallback(() => {
     if (isMounted) {
       if (firstRun || isSecondDelayOver) {
-        console.log('image array!!!')
-        // console.log('run first animation')
         firstImageAnimation()
         setIsSecondDelayOver(false)
         setFirstRun(false)
       }
       if (isFirstDelayOver) {
-        console.log('copy image array!!!')
-        // console.log('run second animation')
         secondImageAnimation()
         setIsFirstDelayOver(false)
       }
@@ -110,33 +123,8 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     return () => {setIsMounted(false)}
   }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
 
-  const fetchImage = useCallback(async (): Promise<Array<string>> => {
-    const response = await fetch(Flickr_API)
-    const json: Response = (await response.json()) as Response
-    return json.items.map((item) => item.media.m)
-  }, [])
-
-  useEffect(() => {
-    if (isFetchNeeded) {
-      void fetchImage()
-        .then((newImageArray) => {
-          setImageArray((current) => {
-            current.push(...newImageArray)
-            return current
-          })
-          // setCopyImageArray((current) => {
-          //   current.push(...newImageArray)
-          //   return current
-          // })
-          setFetchNeeded(false)
-          if (firstLoad)
-            setFirstLoad(false)
-        })
-    }
-  }, [isFetchNeeded])
-
-  const firstImageView = imageView(imageArray, 0)
-  const secondImageView = imageView(copyImageArray, 1)
+  const firstImageView = imageView(imageArray[0])
+  const secondImageView = imageView(copyImageArray[1])
 
   return (
     <MainView>
