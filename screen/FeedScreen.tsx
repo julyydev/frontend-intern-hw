@@ -50,7 +50,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         <Text>현재 슬라이드 시간(초)</Text>
         <Text>{second}초</Text>
         <Button title='슬라이드 시간 변경'
-          onPress={() => navigation.navigate('SetTime', {screen: 'Feed'})}
+          onPress={() => navigation.navigate('SetTime', {screen: 'Feed', second: second})}
         />
         <Button title='홈화면으로'
           onPress={() => navigation.navigate('Home', {second: second})}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Text, Button} from 'react-native'
 import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
@@ -17,28 +17,25 @@ type Props = {
 export const SetTimeScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
   const whatScreen = route.params.screen
+  const second = route.params.second
 
   const backScreen = () => {
-    let textToNum = Number(text)
-    if (textToNum === 0)
-      textToNum = 1
-
     if (whatScreen === 'Home')
-      navigation.navigate('Home', {second: textToNum})
+      navigation.navigate('Home', {second: selectedTime})
     else if (whatScreen === 'Feed')
-      navigation.navigate('Feed', {second: textToNum})
+      navigation.navigate('Feed', {second: selectedTime})
   }
 
-  const [text, setText] = useState('');
-  const onChangeText = (value: string) => {
-    setText(value);
-  };
+  const [selectedTime, setSelectedTime] = useState(second);
+  useEffect(() => {
+    setSelectedTime(second ?? 1)
+  }, [second])
 
   return (
     <MainContainer>
       <Text>이미지 하나가 보여질 시간(1~10초)을 선택하세요.</Text>
-      <TimePicker selectedValue={text}
-        onValueChange={value => onChangeText(value)}/>
+      <TimePicker selectedNumber={selectedTime}
+        onNumberChange = {setSelectedTime}/>
       <Button title='원래화면으로'
         onPress={backScreen}
       />

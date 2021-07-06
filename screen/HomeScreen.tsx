@@ -20,25 +20,19 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
   const [isFirst, setIsFirst] = useState(true)
 
-  let second: number | undefined
-
-  if (!isFirst)
-    second = route.params?.second
+  const second = route.params?.second
 
   const moveSetTimeScreen = () => {
     if (isFirst)
       setIsFirst(!isFirst)
-    navigation.navigate('SetTime', {screen: 'Home'})
+    navigation.navigate('SetTime', {screen: 'Home', second: second})
   }
 
   const moveFeedScreen = () => {
     if (isFirst)
       Alert.alert('시간을 선택하지 않았습니다.')
     else
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    { // @ts-ignore
       navigation.navigate('Feed', {second: second})
-    }
   }
 
   return (
