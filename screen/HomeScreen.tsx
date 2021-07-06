@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {Text, Button, Alert} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {Text, Button, BackHandler, Alert} from 'react-native'
 import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -21,6 +21,19 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   const [isFirst, setIsFirst] = useState(true)
 
   const second = route.params?.second
+
+  const backAction = () => {
+    Alert.alert('FlickrAlbumApp', '앱을 정말로 종료하시겠습니까?', [
+      {text: '취소', onPress: () => null},
+      {text: '네', onPress: () => BackHandler.exitApp()}
+    ])
+    return true
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction)
+    return () => BackHandler.removeEventListener('hardwareBackPress', backAction)
+  }, [])
 
   const moveSetTimeScreen = () => {
     if (isFirst)
