@@ -13,7 +13,7 @@ export const useFadeAnimation = (second: number) => {
   const [firstRun, setFirstRun] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
 
-  const {fetchNeeded} = useFetchImage(isFetchNeeded, setFetchNeeded, setImageArray)
+  const {fetchNeeded} = useFetchImage(setFetchNeeded, setImageArray)
 
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,

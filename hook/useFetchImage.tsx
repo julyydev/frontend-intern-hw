@@ -13,7 +13,7 @@ interface Response {
   items: Array<Item>
 }
 
-export const useFetchImage = (isFetchNeeded: boolean, setFetchNeeded: (value: boolean) => void, setImageArray: (value: (value2: string[]) => string[]) => void) => {
+export const useFetchImage = (setFetchNeeded: (value: boolean) => void, setImageArray: (value: (value2: string[]) => string[]) => void) => {
   const fetchImage = useCallback(async (): Promise<Array<string>> => {
     const response = await fetch(Flickr_URL)
     const json: Response = (await response.json()) as Response
@@ -21,16 +21,14 @@ export const useFetchImage = (isFetchNeeded: boolean, setFetchNeeded: (value: bo
   }, [])
 
   const fetchNeeded = () => {
-    if (isFetchNeeded) {
-      void fetchImage()
-        .then((newImageArray) => {
-          setImageArray((current: string[]) => {
-            current.push(...newImageArray)
-            return current
-          })
-          setFetchNeeded(false)
+    void fetchImage()
+      .then((newImageArray) => {
+        setImageArray((current: string[]) => {
+          current.push(...newImageArray)
+          return current
         })
-    }
+        setFetchNeeded(false)
+      })
   }
 
   return {fetchNeeded}
