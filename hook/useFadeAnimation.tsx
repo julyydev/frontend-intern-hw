@@ -38,7 +38,7 @@ export const useFadeAnimation = (second: number) => {
           setFetchNeeded(true)
       })
     })
-  }, [imageArray, copyImageArray])
+  }, [imageArray, copyImageArray, second])
 
   const secondImageAnimation = useCallback(() => {
     Animated.sequence(
@@ -47,7 +47,7 @@ export const useFadeAnimation = (second: number) => {
       setIsSecondDelayOver(true)
       secondImageFadeOut.start()
     })
-  }, [])
+  }, [second])
 
   useEffect(() => {
     if (isFetchNeeded) {
