@@ -39,13 +39,15 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const secondImageView = imageView(copyImageArray[1])
 
   return (
-    <MainView>
-      <AnimationView style={[{opacity: firstFadeValue}]}>
-        {firstImageView}
-      </AnimationView>
-      <AnimationView style={[{opacity: secondFadeValue}]}>
-        {secondImageView}
-      </AnimationView>
+    <MainContainer>
+      <AnimationContainer>
+        <ImageContainer style={[{opacity: firstFadeValue}]}>
+          {firstImageView}
+        </ImageContainer>
+        <ImageContainer style={[{opacity: secondFadeValue}]}>
+          {secondImageView}
+        </ImageContainer>
+      </AnimationContainer>
       <TextButtonContainer>
         <Text>현재 슬라이드 시간(초)</Text>
         <Text>{second}초</Text>
@@ -56,28 +58,33 @@ export const FeedScreen: React.FC<Props> = (Props) => {
           onPress={() => navigation.navigate('Home', {second: second})}
         />
       </TextButtonContainer>
-    </MainView>
+    </MainContainer>
   )
 }
 
-const MainView = styled.View({
+const MainContainer = styled.SafeAreaView({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-around',
   alignItems: 'center'
 })
 
-const AnimationView = styled(Animated.View)({
+const AnimationContainer = styled.View({
+  width: 400,
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center'
+})
+
+const ImageContainer = styled(Animated.View)({
   position: 'absolute',
-  top: 60,
-  flex: 2,
+  flex: 1,
   justifyContent: 'center',
   alignItems: 'center'
 })
 
 const TextButtonContainer = styled.View({
-  bottom: 100,
-  flex: 1,
-  justifyContent: 'flex-end',
+  flex: 0.3,
+  justifyContent: 'flex-start',
   alignItems: 'center'
 })

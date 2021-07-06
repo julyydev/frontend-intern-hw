@@ -14,15 +14,15 @@ const App: React.FC = () => {
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name='Home'
           component={HomeScreen}
-          options={{title: '시작 화면'}}
+          options={{title: '시작 화면', headerShown: false}}
         />
         <Stack.Screen name='Feed'
           component={FeedScreen}
-          options={{title: '슬라이드쇼'}}
+          options={{title: '슬라이드쇼', headerShown: false}}
         />
         <Stack.Screen name='SetTime'
           component={SetTimeScreen}
-          options={{title: '슬라이드 시간 설정'}}
+          options={{title: '슬라이드 시간 설정', headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
