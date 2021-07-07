@@ -43,7 +43,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   )
 }
 
-const MainContainer = styled.View ({
+const MainContainer = styled.SafeAreaView ({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-evenly',
