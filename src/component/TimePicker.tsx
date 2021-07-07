@@ -7,16 +7,16 @@ interface Props {
 }
 
 const timePickerItems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => {
-  return <Picker.Item key={`${value}`} label={`${value}초`} value={`${value}`}/>
+  return <Picker.Item key={`${value}`} label={`${value}초`} value={value}/>
 })
 
 const TimePicker = ({selectedNumber, onNumberChange}: Props) => {
 
-  const onValueChange = useCallback((val: string) => {
-    onNumberChange(Number(val))
+  const onValueChange = useCallback((val: number) => {
+    onNumberChange(val)
   }, [onNumberChange])
 
-  const selectedValue = String(selectedNumber)
+  const selectedValue = selectedNumber
 
   return <Picker style={{width: 200, height: 150}}
     selectedValue={selectedValue}
