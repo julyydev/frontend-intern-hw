@@ -20,19 +20,23 @@ export const FeedScreen: React.FC<Props> = (Props) => {
 
   const second = route.params.second
 
-  const {imageArray,
+  const {
+    imageArray,
     copyImageArray,
     isFirstDelayOver,
     isSecondDelayOver,
     firstFadeValue,
     secondFadeValue,
     setIsMounted,
-    runAnimation} = useFadeAnimation(second)
+    runAnimation,
+  } = useFadeAnimation(second)
 
   useEffect(() => {
     setIsMounted(true)
     runAnimation()
-    return () => {setIsMounted(false)}
+    return () => {
+      setIsMounted(false)
+    }
   }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
 
   const firstImageView = imageView(imageArray[0])
@@ -51,10 +55,12 @@ export const FeedScreen: React.FC<Props> = (Props) => {
       <TextButtonContainer>
         <Text>현재 슬라이드 시간(초)</Text>
         <Text>{second}초</Text>
-        <Button title='슬라이드 시간 변경'
+        <Button
+          title='슬라이드 시간 변경'
           onPress={() => navigation.navigate('SetTime', {screen: 'Feed', second: second})}
         />
-        <Button title='홈화면으로'
+        <Button
+          title='홈화면으로'
           onPress={() => navigation.navigate('Home', {second: second})}
         />
       </TextButtonContainer>
@@ -66,25 +72,25 @@ const MainContainer = styled.SafeAreaView({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-around',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const AnimationContainer = styled.View({
   width: 400,
   flex: 1,
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const ImageContainer = styled(Animated.View)({
   position: 'absolute',
   flex: 1,
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const TextButtonContainer = styled.View({
   flex: 0.3,
   justifyContent: 'flex-start',
-  alignItems: 'center'
+  alignItems: 'center',
 })

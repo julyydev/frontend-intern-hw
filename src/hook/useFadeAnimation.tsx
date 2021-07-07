@@ -18,7 +18,7 @@ export const useFadeAnimation = (second: number) => {
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,
     duration: 1000,
-    useNativeDriver: true
+    useNativeDriver: true,
   })
 
   const firstImageFadeIn = fadeAnimation(firstFadeValue, 1)
@@ -28,7 +28,7 @@ export const useFadeAnimation = (second: number) => {
 
   const firstImageAnimation = useCallback(() => {
     Animated.sequence(
-      [firstImageFadeIn, Animated.delay(second * 1000)]
+      [firstImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
       setCopyImageArray(imageArray)
       setIsFirstDelayOver(true)
@@ -42,7 +42,7 @@ export const useFadeAnimation = (second: number) => {
 
   const secondImageAnimation = useCallback(() => {
     Animated.sequence(
-      [secondImageFadeIn, Animated.delay(second * 1000)]
+      [secondImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
       setIsSecondDelayOver(true)
       secondImageFadeOut.start()
@@ -61,8 +61,7 @@ export const useFadeAnimation = (second: number) => {
         firstImageAnimation()
         setIsSecondDelayOver(false)
         setFirstRun(false)
-      }
-      else if (isFirstDelayOver) {
+      } else if (isFirstDelayOver) {
         secondImageAnimation()
         setIsFirstDelayOver(false)
       }
@@ -77,6 +76,6 @@ export const useFadeAnimation = (second: number) => {
     firstFadeValue,
     secondFadeValue,
     setIsMounted,
-    runAnimation
+    runAnimation,
   }
 }

@@ -25,7 +25,7 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   const backAction = () => {
     Alert.alert('FlickrAlbumApp', '앱을 정말로 종료하시겠습니까?', [
       {text: '취소', onPress: () => null},
-      {text: '네', onPress: () => BackHandler.exitApp()}
+      {text: '네', onPress: () => BackHandler.exitApp()},
     ])
     return true
   }
@@ -52,16 +52,18 @@ export const HomeScreen: React.FC<Props> = (Props) => {
     <MainContainer>
       <TitleContainer>
         {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <LogoImage source={(FlickrLogo)} />
+        <LogoImage source={(FlickrLogo)}/>
         <Title>Album App</Title>
       </TitleContainer>
       <TextButtonContainer>
         <Text>{isFirst ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
         <Text>{second}{isFirst ? ' ' : '초'}</Text>
-        <Button title='슬라이드 시간 변경'
+        <Button
+          title='슬라이드 시간 변경'
           onPress={moveSetTimeScreen}
         />
-        <Button title='슬라이드 시작'
+        <Button
+          title='슬라이드 시작'
           onPress={moveFeedScreen}
         />
       </TextButtonContainer>
@@ -73,28 +75,28 @@ const MainContainer = styled.SafeAreaView({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-around',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const TitleContainer = styled.View({
   flex: 1,
   justifyContent: 'flex-end',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const TextButtonContainer = styled.View({
   flex: 1.7,
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
 })
 
 const LogoImage = styled.Image({
   width: 100,
   height: 50,
-  resizeMode: 'contain'
+  resizeMode: 'contain',
 })
 
 const Title = styled.Text({
   fontSize: 40,
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 })

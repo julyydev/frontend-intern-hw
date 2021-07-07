@@ -17,9 +17,11 @@ const TimePicker = ({selectedNumber, onNumberChange}: Props) => {
     onNumberChange(val)
   }, [onNumberChange])
 
-  return <Picker style={{width: 200, height: 150}}
+  return <Picker
+    style={{width: 200, height: 150}}
     selectedValue={selectedNumber}
-    onValueChange={onValueChange}>
+    onValueChange={onValueChange}
+  >
     {timePickerItems}
   </Picker>
 }

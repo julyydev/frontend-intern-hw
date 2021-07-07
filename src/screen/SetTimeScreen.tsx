@@ -4,14 +4,14 @@ import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
-import TimePicker from '../component/TimePicker';
+import TimePicker from '../component/TimePicker'
 
 type SetTimeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SetTime'>
 type SetTimeScreenRouteProp = RouteProp<RootStackParamList, 'SetTime'>
 
 type Props = {
-    navigation: SetTimeScreenNavigationProp
-    route: SetTimeScreenRouteProp
+  navigation: SetTimeScreenNavigationProp
+  route: SetTimeScreenRouteProp
 }
 
 export const SetTimeScreen: React.FC<Props> = (Props) => {
@@ -26,7 +26,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
       navigation.navigate('Feed', {second: selectedTime})
   }
 
-  const [selectedTime, setSelectedTime] = useState(second);
+  const [selectedTime, setSelectedTime] = useState(second)
   useEffect(() => {
     setSelectedTime(second ?? 1)
   }, [second])
@@ -34,18 +34,21 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   return (
     <MainContainer>
       <Text>이미지 하나가 보여질 시간(1~10초)을 선택하세요.</Text>
-      <TimePicker selectedNumber={selectedTime}
-        onNumberChange = {setSelectedTime}/>
-      <Button title='원래화면으로'
+      <TimePicker
+        selectedNumber={selectedTime}
+        onNumberChange={setSelectedTime}
+      />
+      <Button
+        title='원래화면으로'
         onPress={backScreen}
       />
     </MainContainer>
   )
 }
 
-const MainContainer = styled.SafeAreaView ({
+const MainContainer = styled.SafeAreaView({
   backgroundColor: 'white',
   flex: 1,
   justifyContent: 'space-evenly',
-  alignItems: 'center'
+  alignItems: 'center',
 })
