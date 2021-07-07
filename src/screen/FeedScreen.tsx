@@ -18,7 +18,7 @@ interface Props {
 export const FeedScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
 
-  const second = route.params?.second
+  const second = route.params.second
 
   const {imageArray,
     copyImageArray,

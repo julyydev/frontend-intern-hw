@@ -9,7 +9,7 @@ import {RouteProp} from '@react-navigation/native'
 import FlickrLogo from '../assets/image/FlickrLogo.png'
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>
-type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Feed'>
+type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>
 
 interface Props {
   navigation: HomeScreenNavigationProp
