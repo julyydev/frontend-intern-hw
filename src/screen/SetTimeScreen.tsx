@@ -20,10 +20,11 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
   const second = route.params.second
 
   const backScreen = () => {
-    if (whatScreen === 'Home')
+    if (whatScreen === 'Home') {
       navigation.navigate('Home', {second: selectedTime})
-    else if (whatScreen === 'Feed')
+    } else if (whatScreen === 'Feed') {
       navigation.navigate('Feed', {second: selectedTime})
+    }
   }
 
   const [selectedTime, setSelectedTime] = useState(second)

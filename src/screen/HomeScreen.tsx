@@ -36,16 +36,18 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   }, [])
 
   const moveSetTimeScreen = () => {
-    if (isFirst)
+    if (isFirst) {
       setIsFirst(!isFirst)
+    }
     navigation.navigate('SetTime', {screen: 'Home', second: second})
   }
 
   const moveFeedScreen = () => {
-    if (isFirst)
+    if (isFirst) {
       Alert.alert('시간을 선택하지 않았습니다.')
-    else
+    } else {
       navigation.navigate('Feed', {second: second})
+    }
   }
 
   return (
