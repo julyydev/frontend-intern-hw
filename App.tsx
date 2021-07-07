@@ -1,10 +1,10 @@
 import React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import {RootStackParamList} from './navigation/ParamList'
-import {HomeScreen} from './screen/HomeScreen'
-import {FeedScreen} from './screen/FeedScreen'
-import {SetTimeScreen} from './screen/SetTimeScreen'
+import {RootStackParamList} from './src/navigation/ParamList'
+import {HomeScreen} from './src/screen/HomeScreen'
+import {FeedScreen} from './src/screen/FeedScreen'
+import {SetTimeScreen} from './src/screen/SetTimeScreen'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
