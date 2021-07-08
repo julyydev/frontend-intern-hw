@@ -30,16 +30,19 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     runAnimation,
   } = useFadeAnimation(second)
 
+  const firstImageView = imageView(imageArray[0])
+  const secondImageView = imageView(copyImageArray[1])
+
+  useEffect(() => {
+    runAnimation()
+  }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
+
   useEffect(() => {
     setIsMounted(true)
-    runAnimation()
     return () => {
       setIsMounted(false)
     }
-  }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
-
-  const firstImageView = imageView(imageArray[0])
-  const secondImageView = imageView(copyImageArray[1])
+  }, [])
 
   return (
     <MainContainer>
