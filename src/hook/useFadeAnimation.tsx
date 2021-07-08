@@ -1,10 +1,10 @@
 import {Animated} from 'react-native'
 import {useCallback, useEffect, useRef, useState} from 'react'
 import {useFetchImage} from './useFetchImage'
-import {imageSource} from '../assets/source/imageSource'
 
 export const useFadeAnimation = (second: number) => {
-  const {imageArray, copyImageArray, setImageArray, setCopyImageArray} = imageSource()
+  const [imageArray, setImageArray] = useState<Array<string>>([])
+  const [copyImageArray, setCopyImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setIsFetchNeeded] = useState(true)
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
