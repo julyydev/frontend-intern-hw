@@ -4,7 +4,6 @@ import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import FlickrLogo from '../assets/image/FlickrLogo.png'
 
@@ -48,7 +47,6 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   return (
     <MainContainer>
       <TitleContainer>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
         <LogoImage source={(FlickrLogo)}/>
         <Title>Album App</Title>
       </TitleContainer>
