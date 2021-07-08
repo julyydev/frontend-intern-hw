@@ -19,8 +19,8 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const second = route.params.second
 
   const {
-    imageArray,
-    copyImageArray,
+    firstImageUrl,
+    secondImageUrl,
     firstFadeValue,
     secondFadeValue,
   } = useFadeAnimation(second)
@@ -28,12 +28,16 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   return (
     <MainContainer>
       <AnimationContainer>
+        {firstImageUrl !== undefined &&
         <ImageContainer style={[{opacity: firstFadeValue}]}>
-          <StyledImage source={{uri: imageArray[0]}}/>
+          <StyledImage source={{uri: firstImageUrl}}/>
         </ImageContainer>
+        }
+        {secondImageUrl !== undefined &&
         <ImageContainer style={[{opacity: secondFadeValue}]}>
-          <StyledImage source={{uri: copyImageArray[1]}}/>
+          <StyledImage source={{uri: secondImageUrl}}/>
         </ImageContainer>
+        }
       </AnimationContainer>
       <TextButtonContainer>
         <Text>현재 슬라이드 시간(초)</Text>

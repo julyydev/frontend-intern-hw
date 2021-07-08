@@ -4,13 +4,14 @@ import {useFetchImage} from './useFetchImage'
 
 export const useFadeAnimation = (second: number) => {
   const [imageArray, setImageArray] = useState<Array<string>>([])
-  const [copyImageArray, setCopyImageArray] = useState<Array<string>>([])
   const [isFetchNeeded, setIsFetchNeeded] = useState(true)
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
   const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
   const [isSecondDelayOver, setIsSecondDelayOver] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
+  const [firstImageUrl, setFirstImageUrl] = useState<string>()
+  const [secondImageUrl, setSecondImageUrl] = useState<string>()
 
   const {pushImageArray} = useFetchImage(setIsFetchNeeded, setImageArray)
 
@@ -33,16 +34,11 @@ export const useFadeAnimation = (second: number) => {
     Animated.sequence(
       [firstImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
-      setCopyImageArray(imageArray)
+      setImageArray((prev) => prev.slice(1))
       setIsFirstDelayOver(true)
-      firstImageFadeOut.start(() => {
-        setImageArray(prev => prev.slice(2))
-        if (imageArray.length === 6) {
-          setIsFetchNeeded(true)
-        }
-      })
+      firstImageFadeOut.start()
     })
-  }, [firstFadeValue, imageArray, second])
+  }, [firstFadeValue, second])
 
   const secondImageAnimation = useCallback(() => {
     const secondImageFadeIn = fadeAnimation(secondFadeValue, 1)
@@ -51,22 +47,27 @@ export const useFadeAnimation = (second: number) => {
     Animated.sequence(
       [secondImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
+      setImageArray((prev) => prev.slice(1))
       setIsSecondDelayOver(true)
       secondImageFadeOut.start()
     })
   }, [secondFadeValue, second])
 
   useEffect(() => {
-    if (isMounted) {
+    if (isMounted && imageArray.length > 0) {
+      const url = imageArray[0]
+
       if (isSecondDelayOver) {
+        setFirstImageUrl(url)
         firstImageAnimation()
         setIsSecondDelayOver(false)
       } else if (isFirstDelayOver) {
+        setSecondImageUrl(url)
         secondImageAnimation()
         setIsFirstDelayOver(false)
       }
     }
-  }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver])
+  }, [isMounted, imageArray, imageArray.length, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver])
 
   useEffect(() => {
     setIsMounted(true)
@@ -75,9 +76,16 @@ export const useFadeAnimation = (second: number) => {
     }
   }, [setIsMounted])
 
+  useEffect(() => {
+    if (imageArray.length === 6) {
+      setIsFetchNeeded(true)
+    }
+  }, [imageArray.length])
+
   return {
+    firstImageUrl,
+    secondImageUrl,
     imageArray,
-    copyImageArray,
     isFirstDelayOver,
     isSecondDelayOver,
     firstFadeValue,
