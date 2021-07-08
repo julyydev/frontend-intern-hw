@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {RootStackParamList} from './src/navigation/ParamList'
 import {HomeScreen} from './src/screen/HomeScreen'
 import {FeedScreen} from './src/screen/FeedScreen'
-import {SetTimeScreen} from './src/screen/SetTimeScreen'
+import {TimeSettingScreen} from './src/screen/TimeSettingScreen'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -20,8 +20,8 @@ const App: React.FC = () => {
           component={FeedScreen}
           options={{title: '슬라이드쇼', headerShown: false}}
         />
-        <Stack.Screen name='SetTime'
-          component={SetTimeScreen}
+        <Stack.Screen name='TimeSetting'
+          component={TimeSettingScreen}
           options={{title: '슬라이드 시간 설정', headerShown: false}}
         />
       </Stack.Navigator>

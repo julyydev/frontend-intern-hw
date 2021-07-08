@@ -1,9 +1,9 @@
 import React, {useMemo} from 'react'
 import styled from '@emotion/native'
 
-const imageView = (image: string) => useMemo(() => {
-  return <StyledImage source={{uri: image}}/>
-}, [image])
+const imageView = (imageSource: string) => useMemo(() => {
+  return <StyledImage source={{uri: imageSource}}/>
+}, [imageSource])
 
 export default imageView
 

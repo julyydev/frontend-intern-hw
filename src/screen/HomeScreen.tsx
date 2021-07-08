@@ -18,11 +18,11 @@ interface Props {
 
 export const HomeScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
-  const [isFirst, setIsFirst] = useState(true)
-
   const second = route.params?.second
 
-  const backAction = () => {
+  const [isFirstAppRun, setIsFirstAppRun] = useState(true)
+
+  const backButtonAction = () => {
     Alert.alert('FlickrAlbumApp', '앱을 정말로 종료하시겠습니까?', [
       {text: '취소', onPress: () => null},
       {text: '네', onPress: () => BackHandler.exitApp()},
@@ -31,19 +31,19 @@ export const HomeScreen: React.FC<Props> = (Props) => {
   }
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction)
-    return () => BackHandler.removeEventListener('hardwareBackPress', backAction)
+    BackHandler.addEventListener('hardwareBackPress', backButtonAction)
+    return () => BackHandler.removeEventListener('hardwareBackPress', backButtonAction)
   }, [])
 
-  const moveSetTimeScreen = () => {
-    if (isFirst) {
-      setIsFirst(!isFirst)
+  const handleSlideTimeSettingButtonPress = () => {
+    if (isFirstAppRun) {
+      setIsFirstAppRun(!isFirstAppRun)
     }
-    navigation.navigate('SetTime', {screen: 'Home', second: second})
+    navigation.navigate('TimeSetting', {whatScreen: 'Home', second: second})
   }
 
-  const moveFeedScreen = () => {
-    if (isFirst) {
+  const handleSlideStartButtonPress = () => {
+    if (isFirstAppRun) {
       Alert.alert('시간을 선택하지 않았습니다.')
     } else {
       navigation.navigate('Feed', {second: second})
@@ -58,15 +58,15 @@ export const HomeScreen: React.FC<Props> = (Props) => {
         <Title>Album App</Title>
       </TitleContainer>
       <TextButtonContainer>
-        <Text>{isFirst ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
-        <Text>{second}{isFirst ? ' ' : '초'}</Text>
+        <Text>{isFirstAppRun ? '환영합니다. 슬라이드 시간을 설정해주세요.' : '현재 슬라이드 시간(초)'}</Text>
+        <Text>{isFirstAppRun ? ' ' : `${second}초`}</Text>
         <Button
           title='슬라이드 시간 변경'
-          onPress={moveSetTimeScreen}
+          onPress={handleSlideTimeSettingButtonPress}
         />
         <Button
           title='슬라이드 시작'
-          onPress={moveFeedScreen}
+          onPress={handleSlideStartButtonPress}
         />
       </TextButtonContainer>
     </MainContainer>

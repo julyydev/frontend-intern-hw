@@ -1,5 +1,5 @@
 export type RootStackParamList = {
   Home: {second: number}
   Feed: {second: number}
-  SetTime: {screen: string, second: number}
+  TimeSetting: {whatScreen: string, second: number}
 }

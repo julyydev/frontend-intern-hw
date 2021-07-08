@@ -6,31 +6,32 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 import TimePicker from '../component/TimePicker'
 
-type SetTimeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SetTime'>
-type SetTimeScreenRouteProp = RouteProp<RootStackParamList, 'SetTime'>
+type SetTimeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TimeSetting'>
+type SetTimeScreenRouteProp = RouteProp<RootStackParamList, 'TimeSetting'>
 
 type Props = {
   navigation: SetTimeScreenNavigationProp
   route: SetTimeScreenRouteProp
 }
 
-export const SetTimeScreen: React.FC<Props> = (Props) => {
+export const TimeSettingScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
-  const whatScreen = route.params.screen
+  const whatScreen = route.params.whatScreen
   const second = route.params.second
 
-  const backScreen = () => {
+  const [selectedTime, setSelectedTime] = useState(second)
+
+  useEffect(() => {
+    setSelectedTime(second ?? 1)
+  }, [second])
+
+  const handlePreviousButtonPress = () => {
     if (whatScreen === 'Home') {
       navigation.navigate('Home', {second: selectedTime})
     } else if (whatScreen === 'Feed') {
       navigation.navigate('Feed', {second: selectedTime})
     }
   }
-
-  const [selectedTime, setSelectedTime] = useState(second)
-  useEffect(() => {
-    setSelectedTime(second ?? 1)
-  }, [second])
 
   return (
     <MainContainer>
@@ -41,7 +42,7 @@ export const SetTimeScreen: React.FC<Props> = (Props) => {
       />
       <Button
         title='원래화면으로'
-        onPress={backScreen}
+        onPress={handlePreviousButtonPress}
       />
     </MainContainer>
   )

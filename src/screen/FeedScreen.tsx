@@ -17,7 +17,6 @@ interface Props {
 
 export const FeedScreen: React.FC<Props> = (Props) => {
   const {navigation, route} = Props
-
   const second = route.params.second
 
   const {
@@ -57,7 +56,7 @@ export const FeedScreen: React.FC<Props> = (Props) => {
         <Text>{second}초</Text>
         <Button
           title='슬라이드 시간 변경'
-          onPress={() => navigation.navigate('SetTime', {screen: 'Feed', second: second})}
+          onPress={() => navigation.navigate('TimeSetting', {whatScreen: 'Feed', second: second})}
         />
         <Button
           title='홈화면으로'

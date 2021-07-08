@@ -5,15 +5,21 @@ import {imageSource} from '../assets/source/imageSource'
 
 export const useFadeAnimation = (second: number) => {
   const {imageArray, copyImageArray, setImageArray, setCopyImageArray} = imageSource()
-  const [isFetchNeeded, setFetchNeeded] = useState(true)
+  const [isFetchNeeded, setIsFetchNeeded] = useState(true)
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
   const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
   const [isSecondDelayOver, setIsSecondDelayOver] = useState(false)
-  const [firstRun, setFirstRun] = useState(true)
+  const [isFirstSlideRun, setIsFirstSlideRun] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
 
-  const {fetchNeeded} = useFetchImage(setFetchNeeded, setImageArray)
+  const {pushImageArray} = useFetchImage(setIsFetchNeeded, setImageArray)
+
+  useEffect(() => {
+    if (isFetchNeeded) {
+      pushImageArray()
+    }
+  }, [isFetchNeeded])
 
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,
@@ -35,7 +41,7 @@ export const useFadeAnimation = (second: number) => {
       firstImageFadeOut.start(() => {
         setImageArray(imageArray.slice(2))
         if (imageArray.length === 6) {
-          setFetchNeeded(true)
+          setIsFetchNeeded(true)
         }
       })
     })
@@ -50,24 +56,18 @@ export const useFadeAnimation = (second: number) => {
     })
   }, [second])
 
-  useEffect(() => {
-    if (isFetchNeeded) {
-      fetchNeeded()
-    }
-  }, [isFetchNeeded])
-
   const runAnimation = useCallback(() => {
     if (isMounted) {
-      if (firstRun || isSecondDelayOver) {
+      if (isFirstSlideRun || isSecondDelayOver) {
         firstImageAnimation()
         setIsSecondDelayOver(false)
-        setFirstRun(false)
+        setIsFirstSlideRun(false)
       } else if (isFirstDelayOver) {
         secondImageAnimation()
         setIsFirstDelayOver(false)
       }
     }
-  }, [imageArray, copyImageArray, isFirstDelayOver, isSecondDelayOver, firstRun])
+  }, [imageArray, copyImageArray, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
 
   return {
     imageArray,
