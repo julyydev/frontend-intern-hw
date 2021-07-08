@@ -1,25 +1,17 @@
 import {Animated} from 'react-native'
 import {useCallback, useEffect, useRef, useState} from 'react'
-import {useFetchImage} from './useFetchImage'
+import {fetchImage} from './FetchImage'
 
 export const useFadeAnimation = (second: number) => {
   const [imageArray, setImageArray] = useState<Array<string>>([])
+  const [isImageReady, setImageReady] = useState<boolean>(false)
   const [isFetchNeeded, setIsFetchNeeded] = useState(true)
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
-  const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
-  const [isSecondDelayOver, setIsSecondDelayOver] = useState(true)
+  const [nextIndex, setNextIndex] = useState(0)
   const [isMounted, setIsMounted] = useState(true)
   const [firstImageUrl, setFirstImageUrl] = useState<string>()
   const [secondImageUrl, setSecondImageUrl] = useState<string>()
-
-  const {pushImageArray} = useFetchImage(setIsFetchNeeded, setImageArray)
-
-  useEffect(() => {
-    if (isFetchNeeded) {
-      pushImageArray()
-    }
-  }, [isFetchNeeded, pushImageArray])
 
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,
@@ -27,47 +19,32 @@ export const useFadeAnimation = (second: number) => {
     useNativeDriver: true,
   })
 
-  const firstImageAnimation = useCallback(() => {
-    const firstImageFadeIn = fadeAnimation(firstFadeValue, 1)
-    const firstImageFadeOut = fadeAnimation(firstFadeValue, 0)
+  const startImageAnimation = useCallback((index: number, url: string) => {
+    console.log(`${Date()}: ${index}`)
+    const fadeValue = index === 0 ? firstFadeValue : secondFadeValue
+    const fadeIn = fadeAnimation(fadeValue, 1)
+    const fadeOut = fadeAnimation(fadeValue, 0)
+
+    if (index === 0) {
+      setFirstImageUrl(url)
+    } else {
+      setSecondImageUrl(url)
+    }
 
     Animated.sequence(
-      [firstImageFadeIn, Animated.delay(second * 1000)],
+      [fadeIn, Animated.delay(second * 1000)],
     ).start(() => {
       setImageArray((prev) => prev.slice(1))
-      setIsFirstDelayOver(true)
-      firstImageFadeOut.start()
+      setNextIndex((prev) => (prev + 1) % 2)
+      fadeOut.start()
     })
-  }, [firstFadeValue, second])
-
-  const secondImageAnimation = useCallback(() => {
-    const secondImageFadeIn = fadeAnimation(secondFadeValue, 1)
-    const secondImageFadeOut = fadeAnimation(secondFadeValue, 0)
-
-    Animated.sequence(
-      [secondImageFadeIn, Animated.delay(second * 1000)],
-    ).start(() => {
-      setImageArray((prev) => prev.slice(1))
-      setIsSecondDelayOver(true)
-      secondImageFadeOut.start()
-    })
-  }, [secondFadeValue, second])
+  }, [firstFadeValue, secondFadeValue, second])
 
   useEffect(() => {
-    if (isMounted && imageArray.length > 0) {
-      const url = imageArray[0]
-
-      if (isSecondDelayOver) {
-        setFirstImageUrl(url)
-        firstImageAnimation()
-        setIsSecondDelayOver(false)
-      } else if (isFirstDelayOver) {
-        setSecondImageUrl(url)
-        secondImageAnimation()
-        setIsFirstDelayOver(false)
-      }
+    if (isMounted && isImageReady) {
+      startImageAnimation(nextIndex, imageArray[0])
     }
-  }, [isMounted, imageArray, imageArray.length, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver])
+  }, [isMounted, isImageReady, startImageAnimation, nextIndex]) // imageArray 넣으면 망함..
 
   useEffect(() => {
     setIsMounted(true)
@@ -82,12 +59,25 @@ export const useFadeAnimation = (second: number) => {
     }
   }, [imageArray.length])
 
+  useEffect(() => {
+    if (!isFetchNeeded) {
+      return
+    }
+    void fetchImage()
+      .then((urls) => {
+        setImageArray((current: string[]) => {
+          current.push(...urls)
+          return current
+        })
+        setIsFetchNeeded(false)
+        setImageReady(true)
+      })
+  }, [isImageReady, isFetchNeeded])
+
   return {
     firstImageUrl,
     secondImageUrl,
     imageArray,
-    isFirstDelayOver,
-    isSecondDelayOver,
     firstFadeValue,
     secondFadeValue,
   }
