@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {Text, Button, Animated} from 'react-native'
 import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
-import imageView from '../component/ImageView'
 import {useFadeAnimation} from '../hook/useFadeAnimation'
 
 type FeedScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Feed'>
@@ -28,8 +27,12 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     runAnimation,
   } = useFadeAnimation(second)
 
-  const firstImageView = imageView(imageArray[0])
-  const secondImageView = imageView(copyImageArray[1])
+  const firstImageView = useMemo(() => {
+    return <StyledImage source={{uri: imageArray[0]}}/>
+  }, [imageArray])
+  const secondImageView = useMemo(() => {
+    return <StyledImage source={{uri: copyImageArray[1]}}/>
+  }, [copyImageArray])
 
   useEffect(() => {
     runAnimation()
@@ -87,6 +90,12 @@ const ImageContainer = styled(Animated.View)({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
+})
+
+const StyledImage = styled.Image({
+  width: 350,
+  height: 450,
+  resizeMode: 'contain',
 })
 
 const TextButtonContainer = styled.View({
