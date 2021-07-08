@@ -57,7 +57,7 @@ export const useFadeAnimation = (second: number) => {
     })
   }, [secondFadeValue, second])
 
-  const runAnimation = useCallback(() => {
+  useEffect(() => {
     if (isMounted) {
       if (isFirstSlideRun || isSecondDelayOver) {
         firstImageAnimation()
@@ -69,10 +69,6 @@ export const useFadeAnimation = (second: number) => {
       }
     }
   }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
-
-  useEffect(() => {
-    runAnimation()
-  }, [runAnimation])
 
   useEffect(() => {
     setIsMounted(true)
