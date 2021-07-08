@@ -73,7 +73,12 @@
 5. 빌드
 
     ```
-    $ yarn install && yarn ios
+    $ yarn install
+    ```   
+    ios 폴더로 들어간 후 pod install
+      ```
+    $ cd ios
+    $ pod install
     ```   
     
 6. 작업하는 디렉토리에서 실행
