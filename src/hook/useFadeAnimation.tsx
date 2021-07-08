@@ -39,7 +39,7 @@ export const useFadeAnimation = (second: number) => {
       setCopyImageArray(imageArray)
       setIsFirstDelayOver(true)
       firstImageFadeOut.start(() => {
-        setImageArray(imageArray.slice(2))
+        setImageArray(prev => prev.slice(2))
         if (imageArray.length === 6) {
           setIsFetchNeeded(true)
         }
