@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React from 'react'
 import {Text, Button, Animated} from 'react-native'
 import styled from '@emotion/native'
 import {RootStackParamList} from '../navigation/ParamList'
@@ -23,36 +23,16 @@ export const FeedScreen: React.FC<Props> = (Props) => {
     copyImageArray,
     firstFadeValue,
     secondFadeValue,
-    setIsMounted,
-    runAnimation,
   } = useFadeAnimation(second)
-
-  const firstImageView = useMemo(() => {
-    return <StyledImage source={{uri: imageArray[0]}}/>
-  }, [imageArray])
-  const secondImageView = useMemo(() => {
-    return <StyledImage source={{uri: copyImageArray[1]}}/>
-  }, [copyImageArray])
-
-  useEffect(() => {
-    runAnimation()
-  }, [runAnimation])
-
-  useEffect(() => {
-    setIsMounted(true)
-    return () => {
-      setIsMounted(false)
-    }
-  }, [setIsMounted])
 
   return (
     <MainContainer>
       <AnimationContainer>
         <ImageContainer style={[{opacity: firstFadeValue}]}>
-          {firstImageView}
+          <StyledImage source={{uri: imageArray[0]}}/>
         </ImageContainer>
         <ImageContainer style={[{opacity: secondFadeValue}]}>
-          {secondImageView}
+          <StyledImage source={{uri: copyImageArray[1]}}/>
         </ImageContainer>
       </AnimationContainer>
       <TextButtonContainer>

@@ -70,6 +70,17 @@ export const useFadeAnimation = (second: number) => {
     }
   }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
 
+  useEffect(() => {
+    runAnimation()
+  }, [runAnimation])
+
+  useEffect(() => {
+    setIsMounted(true)
+    return () => {
+      setIsMounted(false)
+    }
+  }, [setIsMounted])
+
   return {
     imageArray,
     copyImageArray,
@@ -77,7 +88,5 @@ export const useFadeAnimation = (second: number) => {
     isSecondDelayOver,
     firstFadeValue,
     secondFadeValue,
-    setIsMounted,
-    runAnimation,
   }
 }
