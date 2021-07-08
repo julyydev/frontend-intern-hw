@@ -9,8 +9,7 @@ export const useFadeAnimation = (second: number) => {
   const firstFadeValue = useRef(new Animated.Value(0)).current
   const secondFadeValue = useRef(new Animated.Value(0)).current
   const [isFirstDelayOver, setIsFirstDelayOver] = useState(false)
-  const [isSecondDelayOver, setIsSecondDelayOver] = useState(false)
-  const [isFirstSlideRun, setIsFirstSlideRun] = useState(true)
+  const [isSecondDelayOver, setIsSecondDelayOver] = useState(true)
   const [isMounted, setIsMounted] = useState(true)
 
   const {pushImageArray} = useFetchImage(setIsFetchNeeded, setImageArray)
@@ -59,16 +58,15 @@ export const useFadeAnimation = (second: number) => {
 
   useEffect(() => {
     if (isMounted) {
-      if (isFirstSlideRun || isSecondDelayOver) {
+      if (isSecondDelayOver) {
         firstImageAnimation()
         setIsSecondDelayOver(false)
-        setIsFirstSlideRun(false)
       } else if (isFirstDelayOver) {
         secondImageAnimation()
         setIsFirstDelayOver(false)
       }
     }
-  }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
+  }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver])
 
   useEffect(() => {
     setIsMounted(true)
