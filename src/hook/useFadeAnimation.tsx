@@ -19,7 +19,7 @@ export const useFadeAnimation = (second: number) => {
     if (isFetchNeeded) {
       pushImageArray()
     }
-  }, [isFetchNeeded])
+  }, [isFetchNeeded, pushImageArray])
 
   const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
     toValue: toValue,
@@ -27,12 +27,10 @@ export const useFadeAnimation = (second: number) => {
     useNativeDriver: true,
   })
 
-  const firstImageFadeIn = fadeAnimation(firstFadeValue, 1)
-  const firstImageFadeOut = fadeAnimation(firstFadeValue, 0)
-  const secondImageFadeIn = fadeAnimation(secondFadeValue, 1)
-  const secondImageFadeOut = fadeAnimation(secondFadeValue, 0)
-
   const firstImageAnimation = useCallback(() => {
+    const firstImageFadeIn = fadeAnimation(firstFadeValue, 1)
+    const firstImageFadeOut = fadeAnimation(firstFadeValue, 0)
+
     Animated.sequence(
       [firstImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
@@ -45,16 +43,19 @@ export const useFadeAnimation = (second: number) => {
         }
       })
     })
-  }, [imageArray, copyImageArray, second])
+  }, [firstFadeValue, imageArray, second])
 
   const secondImageAnimation = useCallback(() => {
+    const secondImageFadeIn = fadeAnimation(secondFadeValue, 1)
+    const secondImageFadeOut = fadeAnimation(secondFadeValue, 0)
+
     Animated.sequence(
       [secondImageFadeIn, Animated.delay(second * 1000)],
     ).start(() => {
       setIsSecondDelayOver(true)
       secondImageFadeOut.start()
     })
-  }, [second])
+  }, [secondFadeValue, second])
 
   const runAnimation = useCallback(() => {
     if (isMounted) {
@@ -67,7 +68,7 @@ export const useFadeAnimation = (second: number) => {
         setIsFirstDelayOver(false)
       }
     }
-  }, [imageArray, copyImageArray, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
+  }, [isMounted, firstImageAnimation, secondImageAnimation, isFirstDelayOver, isSecondDelayOver, isFirstSlideRun])
 
   return {
     imageArray,
