@@ -22,8 +22,6 @@ export const FeedScreen: React.FC<Props> = (Props) => {
   const {
     imageArray,
     copyImageArray,
-    isFirstDelayOver,
-    isSecondDelayOver,
     firstFadeValue,
     secondFadeValue,
     setIsMounted,
@@ -35,14 +33,14 @@ export const FeedScreen: React.FC<Props> = (Props) => {
 
   useEffect(() => {
     runAnimation()
-  }, [imageArray.length, copyImageArray.length, isFirstDelayOver, isSecondDelayOver])
+  }, [runAnimation])
 
   useEffect(() => {
     setIsMounted(true)
     return () => {
       setIsMounted(false)
     }
-  }, [])
+  }, [setIsMounted])
 
   return (
     <MainContainer>
