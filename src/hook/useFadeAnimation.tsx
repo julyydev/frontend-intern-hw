@@ -1,6 +1,7 @@
 import {Animated} from 'react-native'
 import {useCallback, useEffect, useRef, useState} from 'react'
 import {fetchImage} from './FetchImage'
+import { fadeInOutAnimation } from '../component/Animations'
 
 export const useFadeAnimation = (second: number) => {
   const [imageArray, setImageArray] = useState<Array<string>>([])
@@ -13,17 +14,9 @@ export const useFadeAnimation = (second: number) => {
   const [firstImageUrl, setFirstImageUrl] = useState<string>()
   const [secondImageUrl, setSecondImageUrl] = useState<string>()
 
-  const fadeAnimation = (fadeValue: Animated.Value, toValue: number) => Animated.timing(fadeValue, {
-    toValue: toValue,
-    duration: 1000,
-    useNativeDriver: true,
-  })
-
   const startImageAnimation = useCallback((index: number, url: string) => {
     console.log(`${Date()}: ${index}`)
     const fadeValue = index === 0 ? firstFadeValue : secondFadeValue
-    const fadeIn = fadeAnimation(fadeValue, 1)
-    const fadeOut = fadeAnimation(fadeValue, 0)
 
     if (index === 0) {
       setFirstImageUrl(url)
@@ -31,12 +24,9 @@ export const useFadeAnimation = (second: number) => {
       setSecondImageUrl(url)
     }
 
-    Animated.sequence(
-      [fadeIn, Animated.delay(second * 1000)],
-    ).start(() => {
+    fadeInOutAnimation(fadeValue, second, () => {
       setImageArray((prev) => prev.slice(1))
       setNextIndex((prev) => (prev + 1) % 2)
-      fadeOut.start()
     })
   }, [firstFadeValue, secondFadeValue, second])
 
